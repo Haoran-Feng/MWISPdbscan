@@ -123,8 +123,7 @@ class  MWISPDBSCAN(object):
         if os.path.isdir(targetPath):
             self.processPath=targetPath
         else:
-            print "The target output path does not exist, please check your path: ", targetPath
-
+            print("The target output path does not exist, please check your path: ", targetPath)
 
     def getModelTB(self):
         """
@@ -139,17 +138,15 @@ class  MWISPDBSCAN(object):
         if os.path.isfile(targetFileName):
             self.modelTBFile=targetFileName
         else:
-            print "Downloading a modelTB file from the internet..."
+            print("Downloading a modelTB file from the internet...")
             os.system("wget https://raw.githubusercontent.com/SHAOqzyan/MWISPdbscan/master/minV3minP16_dendroCatTrunk.fit")
 
         if os.path.isfile(targetFileName):
             self.modelTBFile=targetFileName
 
         else:
-            print "Cannot download modelTB onthe internet, you need to manually download a table file named minV3minP16_dendroCatTrunk.fit (https://raw.githubusercontent.com/SHAOqzyan/MWISPdbscan/master/minV3minP16_dendroCatTrunk.fit)"
-
-
-
+            print(
+                "Cannot download modelTB onthe internet, you need to manually download a table file named minV3minP16_dendroCatTrunk.fit (https://raw.githubusercontent.com/SHAOqzyan/MWISPdbscan/master/minV3minP16_dendroCatTrunk.fit)")
 
     def getDBSCANTag(self ):
 
@@ -193,7 +190,7 @@ class  MWISPDBSCAN(object):
 
         if self.rawCOFITS is None:
 
-            print "rawCOFITS need to be provided, stoping..."
+            print("rawCOFITS need to be provided, stoping...")
             return
 
         COdata, COHead= doFITS.readFITS( self.rawCOFITS )
@@ -206,14 +203,14 @@ class  MWISPDBSCAN(object):
 
 
         if self.averageRMS is None and self.rmsFITS is None:
-            print "You need either use averaged rms, or use rmsFITS, which can be accurate to each spectrum. Please check you input"
-
+            print(
+                "You need either use averaged rms, or use rmsFITS, which can be accurate to each spectrum. Please check you input")
 
         if self.rmsFITS == None: #use average rms, te rmsFITS has a higher priority
             rmsData= self.getUniformRMSData(self.averageRMS,Ny,Nx)
 
         else:
-            print "Using rms fits...", self.rmsFITS
+            print("Using rms fits...", self.rmsFITS)
             rmsData, rmsHead = myFITS.readFITS(self.rmsFITS)
         self.rmsData=rmsData #record the rms Data
 
@@ -252,9 +249,7 @@ class  MWISPDBSCAN(object):
 
         labeled_array = labeled_core
 
-
-
-        print num_features, "features found!"
+        print(num_features, "features found!")
 
         saveLabelFITSName=self.getLabelFITSName()
         fits.writeto(  saveLabelFITSName , labeled_array, header=COHead, overwrite=True)
@@ -317,7 +312,7 @@ class  MWISPDBSCAN(object):
         """
 
         if self.rawCOFITS is None:
-            print "rawCOFITS need to be provided, stoping..."
+            print("rawCOFITS need to be provided, stoping...")
             return
 
         COdata, COHead = doFITS.readFITS(self.rawCOFITS)
@@ -347,7 +342,7 @@ class  MWISPDBSCAN(object):
 
             sigma = np.std(negativeValues) / np.sqrt(1 - 2. / np.pi)
 
-            print sigma
+            print(sigma)
             rmsData[i, :, :] = sigma
 
         fits.writeto(writeName, rmsData, header=COHead)
@@ -367,7 +362,7 @@ class  MWISPDBSCAN(object):
 
         if self.labelFITSName is None:
 
-            print "The DBLABLE FITS is needed  "
+            print("The DBLABLE FITS is needed  ")
             return
 
         dataCluster, headCluster = myFITS.readFITS(self.labelFITSName)
@@ -388,7 +383,7 @@ class  MWISPDBSCAN(object):
 
         if self.rawCOFITS is None:
 
-            print "A COFITS is needed  "
+            print("A COFITS is needed  ")
             return
 
         dataCO, headCO = myFITS.readFITS(self.rawCOFITS)
@@ -405,7 +400,7 @@ class  MWISPDBSCAN(object):
 
         if self.rmsData is None:
 
-            print "A rmsData is needed to select peakSgima"
+            print("A rmsData is needed to select peakSgima")
             return
 
 
@@ -491,7 +486,7 @@ class  MWISPDBSCAN(object):
         ids, count = np.unique(clusterValue1D, return_counts=True)
         GoodIDs = ids
         GoodCount = count
-        print "Total number of trunks? ", len(ids)
+        print("Total number of trunks? ", len(ids))
         # print "Total number of Good Trunks? ",len(GoodIDs)
 
         # dataCO,headCO=doFITS.readFITS( CO12FITS )
@@ -508,7 +503,7 @@ class  MWISPDBSCAN(object):
         if  doClean:
             GoodCount = GoodCount[selectVox]
             GoodIDs = GoodIDs[selectVox]
-            print len(GoodIDs), "cluster has more than {} voxels.".format(self.minVox)
+            print(len(GoodIDs), "cluster has more than {} voxels.".format(self.minVox))
 
         pbar = ProgressBar(widgets=widgets, maxval=len(GoodIDs))
         pbar.start()
@@ -683,13 +678,12 @@ class  MWISPDBSCAN(object):
 
 
         if self.catFITSName is None:
-            print "no catalog file provided"
+            print("no catalog file provided")
 
             return
 
         if self.rmsData is None:
-            print "You need to provide the rms FITS data to select peak accordingly"
-
+            print("You need to provide the rms FITS data to select peak accordingly")
 
         saveCleanTBName=self.catFITSName[0:-4]+"_Clean.fit"
 
@@ -863,7 +857,7 @@ class  MWISPDBSCAN(object):
         """
         if self.labelFITSName is None :
 
-            print "You need to provde the label FITS  "
+            print("You need to provde the label FITS  ")
 
             return
 
@@ -962,7 +956,7 @@ class  MWISPDBSCAN(object):
         cloudTB = Table.read(cloudTBFile)
 
         # cloudTB=self.removeWrongEdges(cloudTB)
-        print len(cloudTB), " molecular clouds in total."
+        print(len(cloudTB), " molecular clouds in total.")
 
         dataCluster, headCluster = myFITS.readFITS(labelsFITS)
         dataCO, headCO = myFITS.readFITS( rawCOFITS )
@@ -1002,7 +996,7 @@ class  MWISPDBSCAN(object):
             fits.writeto(savePath + saveName, cropData, header=cropWCS.to_header(), overwrite=True)
 
             fitsZero[:] =  noiseMask
-        print "Cloud fits writing done!"
+        print("Cloud fits writing done!")
 
     def getCloudIDByRow(self, eachC):
 
